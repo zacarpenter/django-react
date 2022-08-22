@@ -26,6 +26,6 @@
     "@mui/material": "^5.10.1",
     "install": "^0.13.0",
     "npm": "^8.18.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^5.2.0"
   }
 }
