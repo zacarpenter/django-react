@@ -23,12 +23,13 @@ export default class CreateRoomPage extends Component {
     };
 
     // bind method to class to use this keyword
-    this.handleVotesChange = this.handleVotesChange.bind(this);
-    this.handleGuestCanPauseChange = this.handleGuestCanPauseChange.bind(this);
-    this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this);
+    this._handleVotesChange = this._handleVotesChange.bind(this);
+    this._handleGuestCanPauseChange =
+      this._handleGuestCanPauseChange.bind(this);
+    this._handleRoomButtonPressed = this._handleRoomButtonPressed.bind(this);
   }
 
-  handleVotesChange(e) {
+  _handleVotesChange(e) {
     this.setState({
       votesToSkip: e.target.value,
     });
@@ -39,15 +40,15 @@ export default class CreateRoomPage extends Component {
             votesToSkip: e.target.value
         });
     }
-    */
+  */
 
-  handleGuestCanPauseChange(e) {
+  _handleGuestCanPauseChange(e) {
     this.setState({
       guestCanPause: e.target.value === "true" ? true : false,
     });
   }
 
-  handleRoomButtonPressed() {
+  _handleRoomButtonPressed() {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -87,7 +88,7 @@ export default class CreateRoomPage extends Component {
               />
               <FormControlLabel
                 value="false"
-                control={<Radio color="secondary" />}
+                control={<Radio color="error" />}
                 label="No Control"
                 labelPlacement="bottom"
               />
@@ -100,7 +101,7 @@ export default class CreateRoomPage extends Component {
               required={true}
               type="number"
               defaultValue={this.defaultVotes}
-              onChange={this.handleVotesChange}
+              onChange={this._handleVotesChange}
               inputProps={{
                 min: 1,
                 style: { textAlign: "center" },
@@ -115,13 +116,13 @@ export default class CreateRoomPage extends Component {
           <Button
             color="primary"
             variant="contained"
-            onClick={this.handleRoomButtonPressed}
+            onClick={this._handleRoomButtonPressed}
           >
             Create a Room
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
-          <Button color="secondary" variant="contained" to="/" component={Link}>
+          <Button color="error" variant="contained" to="/" component={Link}>
             Back
           </Button>
         </Grid>
