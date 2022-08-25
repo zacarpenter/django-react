@@ -9,10 +9,38 @@ import {
   Redirect,
   Route,
 } from "react-router-dom";
+import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+  }
+
+  _renderHomePage() {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={12} alignItems="center" direction="column">
+          <Typography variant="h3" compact="h3">
+            House Party
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <ButtonGroup disableElevation variant="contained" color="primary">
+            <Button color="primary" to="/join" component={Link}>
+              Join a Room
+            </Button>
+            <Button
+              color="secondary"
+              variant="outlined"
+              to="/create"
+              component={Link}
+            >
+              Create a Room
+            </Button>
+          </ButtonGroup>
+        </Grid>
+      </Grid>
+    );
   }
 
   render() {
@@ -20,7 +48,7 @@ export default class HomePage extends Component {
       <Router>
         <Switch>
           <Route exact path="/">
-            <p>This is the home page</p>
+            {this._renderHomePage()}
           </Route>
           <Route path="/join" component={RoomJoinPage} />
           <Route path="/create" component={CreateRoomPage} />
