@@ -17,6 +17,7 @@ export default class HomePage extends Component {
     this.state = {
       roomCode: null,
     };
+    this._clearRoomCode = this._clearRoomCode.bind(this);
   }
 
   // lifecycle method - calling an endpoint on the server
@@ -28,6 +29,10 @@ export default class HomePage extends Component {
           roomCode: data.code,
         });
       });
+  }
+
+  _clearRoomCode() {
+    this.setState({ roomCode: null });
   }
 
   _renderHomePage() {
@@ -74,7 +79,14 @@ export default class HomePage extends Component {
           ></Route>
           <Route path="/join" component={RoomJoinPage} />
           <Route path="/create" component={CreateRoomPage} />
-          <Route path="/room/:roomCode" component={Room} />
+          <Route
+            path="/room/:roomCode"
+            render={(props) => {
+              return (
+                <Room {...props} leaveRoomCallback={this._clearRoomCode} />
+              );
+            }}
+          />
         </Switch>
       </Router>
     );
