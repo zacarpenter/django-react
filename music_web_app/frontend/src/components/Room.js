@@ -8,11 +8,10 @@ export default class Room extends Component {
       votesToSkip: 2,
       guestCanPause: false,
       isHost: false,
-      leaveRoomCallback: false,
+      showSettings: false,
     };
     this.roomCode = this.props.match.params.roomCode;
     this._getRoomDetails();
-    this._leaveButtonPressed = this._leaveButtonPressed.bind(this);
   }
 
   _getRoomDetails() {
@@ -33,7 +32,7 @@ export default class Room extends Component {
       });
   }
 
-  _leaveButtonPressed() {
+  _leaveButtonPressed = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,6 +41,26 @@ export default class Room extends Component {
       this.props.leaveRoomCallback();
       this.props.history.push("/");
     });
+  };
+
+  _updateShowSettings = () => {
+    this.setState({
+      showSettings: value,
+    });
+  };
+
+  renderSettingsButton() {
+    return (
+      <Grid item xs={12} alignItems="center">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this._updateShowSettings(true)}
+        >
+          Settings
+        </Button>
+      </Grid>
+    );
   }
 
   render() {
@@ -67,6 +86,7 @@ export default class Room extends Component {
             Host: {this.state.isHost.toString()}
           </Typography>
         </Grid>
+        {this.state.isHost ? this.renderSettingsButton() : null}
         <Grid item xs={12}>
           <Button
             color="error"
