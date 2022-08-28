@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Button, Typography } from "@mui/material";
+import CreateRoomPage from "./CreateRoomPage";
 
 export default class Room extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ export default class Room extends Component {
 
   renderSettingsButton() {
     return (
-      <Grid item xs={12} alignItems="center">
+      <Grid item xs={12} alignItems="center" direction="column">
         <Button
           variant="contained"
           color="primary"
@@ -63,7 +64,35 @@ export default class Room extends Component {
     );
   }
 
+  renderSettings = () => {
+    return (
+      <Grid container spacing={1} alignItems="center" direction="column">
+        <Grid item xs={12}>
+          <CreateRoomPage
+            update={true}
+            votesToSkip={this.state.votesToSkip}
+            guestCanPause={this.state.guestCanPause}
+            roomCode={this.roomCode}
+            updateCallback={() => {}}
+          ></CreateRoomPage>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => this._updateShowSettings(false)}
+          >
+            Close
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  };
+
   render() {
+    if (this.state.showSettings) {
+      return this.renderSettings();
+    }
     return (
       <Grid container spacing={1} alignItems="center" direction="column">
         <Grid item xs={12}>
