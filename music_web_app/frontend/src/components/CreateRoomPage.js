@@ -10,6 +10,7 @@ import {
   Radio,
   RadioGroup,
   Collapse,
+  Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -132,7 +133,25 @@ export default class CreateRoomPage extends Component {
           <Collapse
             in={this.state.errorMsg != "" || this.state.succesMsg != ""}
           >
-            {this.state.succesMsg}
+            {this.state.succesMsg != "" ? (
+              <Alert
+                severity="success"
+                onClose={() => {
+                  this.setState({ successMsg: "" });
+                }}
+              >
+                {this.state.succesMsg}
+              </Alert>
+            ) : (
+              <Alert
+                severity="error"
+                onClose={() => {
+                  this.setState({ errorMsg: "" });
+                }}
+              >
+                {this.state.errorMsg}
+              </Alert>
+            )}
           </Collapse>
         </Grid>
         <Grid item xs={12} align="center">
