@@ -13,13 +13,21 @@ import {
 import { Link } from "react-router-dom";
 
 export default class CreateRoomPage extends Component {
-  defaultVotes = 2;
+  static defaultProps = {
+    votesToSkip: 2,
+    guestCanPause: true,
+    update: false,
+    roomCode: null,
+    updateCallback: () => {},
+  };
 
   constructor(props) {
     super(props);
     this.state = {
-      guestCanPause: true,
-      votesToSkip: this.defaultVotes,
+      guestCanPause: this.props.guestCanPause,
+      votesToSkip: this.props.votesToSkip,
+      errorMsg: "",
+      succesMsg: "",
     };
 
     // bind method to class to use this keyword
@@ -34,13 +42,6 @@ export default class CreateRoomPage extends Component {
       votesToSkip: e.target.value,
     });
   }
-  /*
-    handleVotesChange = (e) => {
-        this.setState({
-            votesToSkip: e.target.value
-        });
-    }
-  */
 
   _handleGuestCanPauseChange(e) {
     this.setState({
@@ -62,12 +63,49 @@ export default class CreateRoomPage extends Component {
       .then((data) => this.props.history.push("/room/" + data.code));
   }
 
+  _renderCreateButtons = () => {
+    return (
+      <Grid container spacing={1}>
+        <Grid item xs={12} align="center">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={this._handleRoomButtonPressed}
+          >
+            Create a Room
+          </Button>
+        </Grid>
+        <Grid item xs={12} align="center">
+          <Button color="error" variant="contained" to="/" component={Link}>
+            Back
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  _renderUpdateButtons = () => {
+    return (
+      <Grid item xs={12} align="center">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={this._handleRoomButtonPressed}
+        >
+          Update a Room
+        </Button>
+      </Grid>
+    );
+  };
+
   render() {
+    const title = this.props.update ? "Update Room" : "Create a Room";
+
     return (
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">
           <Typography component="h4" variant="h4">
-            Create a Room
+            {title}
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">
@@ -100,7 +138,7 @@ export default class CreateRoomPage extends Component {
             <TextField
               required={true}
               type="number"
-              defaultValue={this.defaultVotes}
+              defaultValue={this.state.votesToSkip}
               onChange={this._handleVotesChange}
               inputProps={{
                 min: 1,
@@ -112,20 +150,9 @@ export default class CreateRoomPage extends Component {
             </FormHelperText>
           </FormControl>
         </Grid>
-        <Grid item xs={12} align="center">
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={this._handleRoomButtonPressed}
-          >
-            Create a Room
-          </Button>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button color="error" variant="contained" to="/" component={Link}>
-            Back
-          </Button>
-        </Grid>
+        {this.props.update
+          ? this._renderUpdateButtons()
+          : this._renderCreateButtons()}
       </Grid>
     );
   }

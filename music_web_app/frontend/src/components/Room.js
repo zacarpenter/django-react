@@ -44,27 +44,13 @@ export default class Room extends Component {
     });
   };
 
-  _updateShowSettings = () => {
+  _updateShowSettings = (value) => {
     this.setState({
       showSettings: value,
     });
   };
 
-  renderSettingsButton() {
-    return (
-      <Grid item xs={12} alignItems="center" direction="column">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => this._updateShowSettings(true)}
-        >
-          Settings
-        </Button>
-      </Grid>
-    );
-  }
-
-  renderSettings = () => {
+  _renderSettings = () => {
     return (
       <Grid container spacing={1} alignItems="center" direction="column">
         <Grid item xs={12}>
@@ -73,7 +59,7 @@ export default class Room extends Component {
             votesToSkip={this.state.votesToSkip}
             guestCanPause={this.state.guestCanPause}
             roomCode={this.roomCode}
-            updateCallback={() => {}}
+            updateCallback={this._getRoomDetails}
           ></CreateRoomPage>
         </Grid>
         <Grid item xs={12}>
@@ -89,9 +75,23 @@ export default class Room extends Component {
     );
   };
 
+  _renderSettingsButton = () => {
+    return (
+      <Grid item xs={12} alignItems="center" direction="column">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this._updateShowSettings(true)}
+        >
+          Settings
+        </Button>
+      </Grid>
+    );
+  };
+
   render() {
     if (this.state.showSettings) {
-      return this.renderSettings();
+      return this._renderSettings();
     }
     return (
       <Grid container spacing={1} alignItems="center" direction="column">
@@ -115,7 +115,7 @@ export default class Room extends Component {
             Host: {this.state.isHost.toString()}
           </Typography>
         </Grid>
-        {this.state.isHost ? this.renderSettingsButton() : null}
+        {this.state.isHost ? this._renderSettingsButton() : null}
         <Grid item xs={12}>
           <Button
             color="error"
