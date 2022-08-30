@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Collapse,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -30,26 +31,26 @@ export default class CreateRoomPage extends Component {
       succesMsg: "",
     };
 
-    // bind method to class to use this keyword
-    this._handleVotesChange = this._handleVotesChange.bind(this);
-    this._handleGuestCanPauseChange =
-      this._handleGuestCanPauseChange.bind(this);
-    this._handleRoomButtonPressed = this._handleRoomButtonPressed.bind(this);
+    // bind method to class to use this keyword - decided to go with arrow functions
+    // this._handleVotesChange = this._handleVotesChange.bind(this);
+    // this._handleGuestCanPauseChange =
+    //   this._handleGuestCanPauseChange.bind(this);
+    // this._handleRoomButtonPressed = this._handleRoomButtonPressed.bind(this);
   }
 
-  _handleVotesChange(e) {
+  _handleVotesChange = (e) => {
     this.setState({
       votesToSkip: e.target.value,
     });
-  }
+  };
 
-  _handleGuestCanPauseChange(e) {
+  _handleGuestCanPauseChange = (e) => {
     this.setState({
       guestCanPause: e.target.value === "true" ? true : false,
     });
-  }
+  };
 
-  _handleRoomButtonPressed() {
+  _handleRoomButtonPressed = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,7 +62,31 @@ export default class CreateRoomPage extends Component {
     fetch("/api/create-room", requestOptions)
       .then((response) => response.json())
       .then((data) => this.props.history.push("/room/" + data.code));
-  }
+  };
+
+  _handleUpdateButtonPressed = () => {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        votes_to_skip: this.state.votesToSkip,
+        guest_can_pause: this.state.guestCanPause,
+        code: this.props.roomCode,
+      }),
+    };
+    fetch("/api/update-room", requestOptions).then((response) => {
+      if (response.ok) {
+        this.setState({
+          succesMsg: "Room updated successfully!",
+        });
+      } else {
+        this.setState({
+          errorMsg: "Error updating room...",
+        });
+      }
+      this.props.updateCallback();
+    });
+  };
 
   _renderCreateButtons = () => {
     return (
@@ -90,7 +115,7 @@ export default class CreateRoomPage extends Component {
         <Button
           color="primary"
           variant="contained"
-          onClick={this._handleRoomButtonPressed}
+          onClick={this._handleUpdateButtonPressed}
         >
           Update a Room
         </Button>
@@ -104,6 +129,13 @@ export default class CreateRoomPage extends Component {
     return (
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">
+          <Collapse
+            in={this.state.errorMsg != "" || this.state.succesMsg != ""}
+          >
+            {this.state.succesMsg}
+          </Collapse>
+        </Grid>
+        <Grid item xs={12} align="center">
           <Typography component="h4" variant="h4">
             {title}
           </Typography>
@@ -115,7 +147,7 @@ export default class CreateRoomPage extends Component {
             </FormHelperText>
             <RadioGroup
               row
-              defaultValue="true"
+              defaultValue={this.props.guestCanPause.toString()}
               onChange={this.handleGuestCanPauseChange}
             >
               <FormControlLabel

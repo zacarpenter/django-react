@@ -15,7 +15,7 @@ export default class Room extends Component {
     this._getRoomDetails();
   }
 
-  _getRoomDetails() {
+  _getRoomDetails = () => {
     fetch("/api/get-room" + "?code=" + this.roomCode)
       .then((response) => {
         if (!response.ok) {
@@ -31,7 +31,7 @@ export default class Room extends Component {
           isHost: data.is_host,
         });
       });
-  }
+  };
 
   _leaveButtonPressed = () => {
     const requestOptions = {
