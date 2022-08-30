@@ -2,7 +2,7 @@ node_modules/
 
 # Credentials for Spotify IDs
 # May eventually refactor with a .env file
-/credentials.py
+/spotify/credentials.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
