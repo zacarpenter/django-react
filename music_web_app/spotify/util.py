@@ -1,10 +1,8 @@
-from datetime import date, timedelta
-from urllib import response
 from .models import SpotifyToken
 from django.utils import timezone
 from datetime import timedelta
 from .credentials import CLIENT_ID, CLIENT_SECRET
-from requests import post
+from requests import post, put, get
 
 def get_user_tokens(session_key):
     user_tokens = SpotifyToken.objects.filter(user=session_key)
@@ -48,7 +46,7 @@ def refresh_spotify_tokens(session_key):
 
     access_token = response.get('access_token')
     token_type = response.get('token_type')
-    expires_in = response.get('expires_token')
+    expires_in = response.get('expires_in')
     refresh_token = response.get('refresh_token')
 
     update_or_create_user_tokens(session_key, access_token, token_type, expires_in, refresh_token)
