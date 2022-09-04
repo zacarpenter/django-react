@@ -1,3 +1,4 @@
+import code
 from django.shortcuts import render, redirect
 from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
 from rest_framework.views import APIView
@@ -114,3 +115,15 @@ class PauseSong(APIView):
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
         return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+class SkipSong(APIView):
+    def post(self, request, format=None):
+        room_code = self.request.session.get('room_code')
+        room = Room.objects.filter(code=room_code)[0]
+
+        if self.request.session.session_key == room.host:
+            skip_song(room.host)
+        else:
+            pass
+
+        return Response({}, status.HTTP_204_NO_CONTENT)
