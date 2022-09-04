@@ -53,6 +53,11 @@ export default class MusicPlayer extends Component {
             <Typography color="textSecondary" variant="subtitle1">
               {this.props.artist}
             </Typography>
+            <Typography variant="subtitle2">
+              {"Votes to skip: "}
+              {this.props.votes} / {this.props.votes_required}
+            </Typography>
+
             <div>
               <IconButton
                 onClick={() => {
