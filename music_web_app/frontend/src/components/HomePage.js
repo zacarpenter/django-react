@@ -51,7 +51,7 @@ export default class HomePage extends Component {
             </Button>
             <Button
               color="default"
-              variant="outlined"
+              variant="contained"
               to="/info"
               component={Link}
             >
