@@ -10,6 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
+import Info from "./Info";
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -49,6 +50,14 @@ export default class HomePage extends Component {
               Join a Room
             </Button>
             <Button
+              color="default"
+              variant="outlined"
+              to="/info"
+              component={Link}
+            >
+              Info
+            </Button>
+            <Button
               color="secondary"
               variant="outlined"
               to="/create"
@@ -78,6 +87,7 @@ export default class HomePage extends Component {
             }}
           ></Route>
           <Route path="/join" component={RoomJoinPage} />
+          <Route path="/info" component={Info} />
           <Route path="/create" component={CreateRoomPage} />
           <Route
             path="/room/:roomCode"
